@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';"/>
+	<title>Popup Window</title>
+	<link rel="stylesheet" type="text/css" href="../css/style.css">
+</head>
+<body>
+	<div id="titleBar">
+		<span id="title">{title}</span>
+		<span id="closebtn">x</span>
+	</div>
+	<br/>
+	<br/>
+	<br/>
+	<br/>
+	<div id="message">{message}</div>
+	<div id="buttons">
+		<button id="yesBtn">Yes</button>
+		<button id="noBtn">No</button>
+	</div>
+	<script>
+		const urlParams = new URLSearchParams(window.location.search);
+		const title = urlParams.get('title');
+		const message = urlParams.get('message');
+		document.getElementById("title").textContent = title;
+		document.getElementById("message").textContent = message;
+
+		document.getElementById("yesBtn").addEventListener('click', () => {
+			window.electron.send('popup-response', true);
+		});
+
+		document.getElementById("noBtn").addEventListener('click', () => {
+			window.electron.send('popup-response', false);
+		});
+
+		document.getElementById("closebtn").addEventListener('click', () => {
+			window.electron.send('popup-response', false);
+		});
+	</script>
+</body>
+</html>

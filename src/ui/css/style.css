@@ -1,0 +1,47 @@
+:root {
+	--titlemargin: 2px;
+}
+
+html {	
+	font-family: sans-serif;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	box-sizing: border-box;
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	border: var(--titlemargin) solid black;
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}
+
+/* Custom Title Bar */
+#titleBar {
+	width: calc(100% - 2*var(--titlemargin)); 
+	height: 32px;
+	background-color: black;
+	position: absolute;
+	top: var(--titlemargin);
+	left: var(--titlemargin);
+	-webkit-app-region: drag;
+}
+
+#title {
+	color: #ffffff;
+	font-size: 16px;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+}
+
+#closebtn {
+	color: #ffffff;
+	font-size: 16px;
+	position: absolute;
+	top: 5px;
+	right: 5px;
+	cursor: pointer;
+	-webkit-app-region: no-drag;
+}

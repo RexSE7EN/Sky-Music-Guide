@@ -1,0 +1,10 @@
+{
+	"appId": "com.github.deathgod7.sky-music-guide",
+	"productName": "Sky Music Guide",
+	"files": ["dist-electron", "dist-react"],
+	"extraResources": ["dist-electron/preload.cjs", "src/assets/**"],
+	"icon": "./desktopIcon.png",
+	"win": {
+	  "target": ["portable", "msi"]
+	}
+  }

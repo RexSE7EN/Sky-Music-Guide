@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+:root {
+	--titlemargin: 2px;
+}
+
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.card {
+  padding: 2em;
+}
+
+html {	
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	box-sizing: border-box;
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	border: var(--titlemargin) solid black;
+	display: flex;
+	flex-direction: column;
+	user-select: none;
+}
+
+@utility drag {
+	-webkit-app-region: drag;
+}
+
+@utility no-drag {
+	-webkit-app-region: no-drag;
+}
+
+@utility no-select {
+	user-select: none;
+}
+
+@utility pointer {
+	cursor: pointer;
+}
+
+
+@layer components {
+	#titleBar {
+		@apply top-[var(--titlemargin)] left-[var(--titlemargin)] h-[40px] bg-black w-full absolute drag;
+	} 
+
+	#appName {
+		@apply text-white inline-flex font-bold items-center space-x-1.5 absolute top-1.5 left-3 no-drag;
+	}
+
+	#appLogo {
+		@apply w-[25px] h-[25px];
+	}
+
+	#title {
+		@apply text-white;
+	}
+
+	#version {
+		@apply text-gray-500 text-[11px] mt-[7px];
+	}
+	
+	#ctrl-btn {
+		@apply text-white justify-end space-x-4 text-lg absolute top-0.5 right-5 no-drag;
+	}
+
+	#minbtn, #maxbtn, #closebtn {
+		@apply cursor-pointer;
+	}
+}
