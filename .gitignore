@@ -46,10 +46,7 @@ build/Release
 *.sln
 *.sw?
 
-#lockfile
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+# X
 /test-results/
 /playwright-report/
 /playwright/.cache/
