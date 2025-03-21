@@ -1,5 +1,4 @@
-import { ipcMain, BrowserWindow } from 'electron';
-import { app } from 'electron';
+import { app, ipcMain, BrowserWindow } from 'electron';
 import path from 'node:path';
 import {getPreloadPath, isDev} from '../utils/infoUtils.js';
 import { addChildWindow, removeChildWindow } from '../utils/windowUtils.js';
@@ -16,7 +15,8 @@ type Options = {
 	alwaysOnTop: boolean;
 	level: number;
 	enableDevMode: boolean;
-	url: string;
+	windowType: string;
+	windowContent?: string;
 	message?: string; // Optional property
 	isPopup?: boolean; // Optional property
 };
@@ -29,6 +29,7 @@ const createWindow = (options: Options) => {
 		maximizable: options.maximizable,
 		resizable: options.resizable,
 		title: options.title,
+		show: false,
 		webPreferences: {
 			preload: getPreloadPath()
 		}
@@ -36,8 +37,6 @@ const createWindow = (options: Options) => {
 
 	newWindow.removeMenu();
 	newWindow.setAlwaysOnTop(options.alwaysOnTop, 'screen-saver', options.level);
-
-	if (isDev() && options.enableDevMode) newWindow.webContents.openDevTools();
 
 	addChildWindow(newWindow);
 
@@ -48,24 +47,29 @@ const createWindow = (options: Options) => {
 	const base = app.getAppPath();
 	console.log(base);
 
-	const query = `?title=${encodeURIComponent(options.title)}${options.message ? `&message=${encodeURIComponent(options.message)}` : ""}`;
+	// const query = `?title=${encodeURIComponent(options.title)}${options.message ? `&message=${encodeURIComponent(options.message)}` : ""}`;
 
 	if (isDev()) {
 		newWindow.webContents.openDevTools();
-		newWindow.loadURL("http://localhost:2325/#/" + options.url + query);
+		newWindow.loadURL("http://localhost:2325/#/" + options.windowType);
+		// newWindow.loadURL("http://localhost:2325/#/" + options.windowType + query);
 	} else {
+		if (options.enableDevMode) newWindow.webContents.openDevTools();
 		newWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'), {
-			hash: `${options.url}${query}`,
+			hash: `${options.windowType}`,
+			// hash: `${options.windowType}${query}`,
 		});
 	}
 
-	//newWindow.loadURL(`file://${path.join('"'+base+'"', options.url)}?title=${encodeURIComponent(options.title)}${options.message ? `&message=${encodeURIComponent(options.message)}` : ''}`);
+	setTimeout(() => {
+		newWindow.webContents.send('create-window-message', {title: options.title, windowContent: options.windowContent});
+	}, 500);
 
 	return newWindow;
 };
 
 const registerCreateSubWindow = () => {
-	ipcMain.on('open-new-window', (event, title, width, height, resizable, maximizable, frameless) => {
+	ipcMain.on('open-new-window', (event, title,content, width, height, resizable, maximizable, frameless, devMode) => {
 		const opt = {
 			title,
 			width,
@@ -75,8 +79,9 @@ const registerCreateSubWindow = () => {
 			frameless,
 			alwaysOnTop: true,
 			level: 0,
-			enableDevMode: true,
-			url: 'normalwindow'
+			enableDevMode: devMode,
+			windowType: "normalwindow",
+			windowContent: content,
 		}
 
 		createWindow(opt);
@@ -84,7 +89,7 @@ const registerCreateSubWindow = () => {
 };
 
 const registerCreatePopupWindow = () => {
-	ipcMain.handle('open-popup-window', async (event, title, message) => {
+	ipcMain.handle('open-popup-window', async (event, title, message, devMode ) => {
 		if (popupWindow) {
 			popupWindow.focus();
 			return;
@@ -100,10 +105,10 @@ const registerCreatePopupWindow = () => {
 				title,
 				alwaysOnTop: true,
 				level: 1,
-				url: 'popupwindow',
+				windowType: 'popupwindow',
 				message,
 				isPopup: true,
-				enableDevMode: false
+				enableDevMode: devMode,
 			}
 
 			popupWindow = createWindow(opt);

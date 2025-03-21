@@ -1,9 +1,10 @@
 import { useEffect } from 'react'
-import {xD} from '../js/core.js';
+import {controlMenu, titleWithVersion} from '../js/core.js';
 
 const TitleBar = () => {
     useEffect(() => {
-        xD();
+        titleWithVersion();
+        controlMenu();
     }, []);
 
     return (

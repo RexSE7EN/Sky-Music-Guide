@@ -2,22 +2,36 @@ import { ipcMain, BrowserWindow } from 'electron';
 import { removeChildWindow } from '../utils/windowUtils.js';
 
 function registerMainEvents() {
-	ipcMain.on('close-window', (event):any => {
-		const closedWindow = BrowserWindow.fromWebContents(event.sender);
-		if (closedWindow) {
-			closedWindow.close();
-			removeChildWindow(closedWindow);
+	ipcMain.on('show-window', (event):void => {
+		const win = BrowserWindow.fromWebContents(event.sender);
+		if (win) {
+			win.show();
 		}
 	});
 
-	ipcMain.on('minimize-window', (event):any => {
+	ipcMain.on('hide-window', (event):void => {
+		const win = BrowserWindow.fromWebContents(event.sender);
+		if (win) {
+			win.hide();
+		}
+	});
+
+	ipcMain.on('close-window', (event):void => {
+		const win = BrowserWindow.fromWebContents(event.sender);
+		if (win) {
+			win.close();
+			removeChildWindow(win);
+		}
+	});
+
+	ipcMain.on('minimize-window', (event):void => {
 		const win = BrowserWindow.fromWebContents(event.sender);
 		if (win) {
 			win.minimize();
 		}
 	});
 
-	ipcMain.on('maximize-window', (event):any => {
+	ipcMain.on('maximize-window', (event):void => {
 		const win = BrowserWindow.fromWebContents(event.sender);
 		if (win) {
 			if (win.isMaximized())

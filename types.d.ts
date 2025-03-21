@@ -6,12 +6,16 @@ type appAPI = {
 	isDev: () => Promise<boolean>;
 };
 type electron = {
-	openNewWindow: (title?: string, width?: number, height?: number, resizable?: boolean, maximizable?: boolean, frameless?: boolean) => void;
+	showWindow: () => void;
+	hideWindow: () => void;
 	closeWindow: () => void;
 	minimizeWindow: () => void;
 	maximizeWindow: () => void;
+	openNewWindow: (title?: string, width?: number, height?: number, resizable?: boolean, maximizable?: boolean, frameless?: boolean) => void;
 	openPopupWindow: (title?: string, message?: string) => Promise<string>;
-	send: (channel: string, ...args: any) => void;
+	sendMessage: (channel: string, ...args: unknown[]) => void;
+	receiveMessage: (channel: string, callback: (...args: unknown[]) => void) => void;
+	removeListeners: (channel: string, callback: (...args: unknown[]) => void) => void;
 };
 
 interface Window {

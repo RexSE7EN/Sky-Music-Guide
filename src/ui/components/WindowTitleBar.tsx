@@ -1,23 +1,36 @@
 import { useEffect } from 'react'
-import {xD} from '../js/core.js';
+import { controlMenu } from '../js/core.js';
 
-const TitleBar = () => {
+function getControls ({type}: {type:string}) {
+    if (type === "popup") {
+        return (
+            <div id="ctrl-btn">
+                <span id="closebtn">x</span>
+            </div>
+        );
+    }
+    return (
+        <div id="ctrl-btn">
+            <span id="minbtn">-</span>
+            <span id="maxbtn">+</span>
+            <span id="closebtn">x</span>
+        </div>
+    );
+}
+
+function WindowTitleBar ({title, type}:{title:string, type:string}){
     useEffect(() => {
-        xD();
+        controlMenu();
     }, []);
 
     return (
         <div id="titleBar">
             <div id="appName">
-                <span id="windowtitle"></span>
+                <span id="windowtitle">{title}</span>
             </div>
-            <div id="ctrl-btn">
-                <span id="minbtn">-</span>
-                <span id="maxbtn">+</span>
-                <span id="closebtn">x</span>
-            </div>
+            {getControls({type})};
         </div>
     );
 };
 
-export default TitleBar;
+export default WindowTitleBar;

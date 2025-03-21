@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react'
 import './css/app.css'
-import {xD} from './js/core.js';
+import { nodeVer, chromeVer, electronVer, openWindow} from './js/core.js';
 import TitleBar from './components/TitleBar'; // Import the new TitleBar component
 
 function App() {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    xD();
+    nodeVer();
+	chromeVer();
+	electronVer();
+	openWindow();
   }, []);
   
   return (
