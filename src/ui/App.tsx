@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import './css/app.css'
 import {xD} from './js/core.js';
+import TitleBar from './components/TitleBar'; // Import the new TitleBar component
 
 function App() {
   const [count, setCount] = useState(0);
@@ -11,20 +12,11 @@ function App() {
   
   return (
     <>
-		<div id="titleBar">
-			<div id="appName">
-				<img id="appLogo" src="/assets/logo/appicon.png" className='w-[25px] h-[25px]'></img>
-				<span id="title"></span>
-				<span id="version"></span>
-			</div>
-			<div id="ctrl-btn">
-				<span id="minbtn">-</span>
-				<span id="maxbtn">+</span>
-				<span id="closebtn">x</span>
-			</div>
-		</div>
-		<h1 className="text-3xl font-bold uppercase">Vite + React</h1>
+		<div id="borderarea">
+        <TitleBar/>
 		<div className="card">
+		<h1 className="text-3xl font-bold uppercase">Vite + React</h1>
+        <button id="openWindowBtn">Click me</button>
 			<button onClick={() => setCount((count) => count + 1)}>
 			count is {count}
 			</button>
@@ -34,8 +26,10 @@ function App() {
 				and Electron <span id="electron-version"></span>.
 			</p>
 		</div>
+		</div>
     </>
   )
 }
 
 export default App
+

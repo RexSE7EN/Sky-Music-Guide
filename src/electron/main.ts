@@ -1,14 +1,13 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
-// import { createSubWindow, createPopupWindow } from './events/createSubWindow.js';
 import { registerMainEvents } from './events/ipcEvents.js';
 import { registerInfoHandle } from './handlers/ipcHandlers.js';
 import { getAllWindows } from './utils/windowUtils.js';
 import { getPreloadPath, isDev } from './utils/infoUtils.js';
+import {registerCreatePopupWindow, registerCreateSubWindow} from "./events/registerWindowEvents.js";
 
 // Create the main window
 const createWindow = () => {
-	var title = 'Sky Music Guide v{version}';
 	const mainWindow = new BrowserWindow({
 		title: `Sky Music Guide v${app.getVersion()}`,
 		width: isDev() ? 1500 : 800,
@@ -43,8 +42,8 @@ app.on('ready', () => {
 	createWindow();
 	registerMainEvents();
 	registerInfoHandle();
-	/*createSubWindow();
-	createPopupWindow();*/
+	registerCreateSubWindow();
+	registerCreatePopupWindow();
 
 	console.log(`Sky Music Guide v${app.getVersion()}`);
 })

@@ -4,29 +4,28 @@
 	--titlemargin: 2px;
 }
 
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
 .card {
-  padding: 2em;
+	padding: 60px;
 }
 
-html {	
-	margin: 0;
-	padding: 0;
+* {
 	overflow: hidden;
 	box-sizing: border-box;
-	background-color: white;
+}
+
+html {
+	/*width: 100%;*/
+	/*height: 100%;*/
+	user-select: none;
+}
+
+#borderarea {
+	border: var(--titlemargin) solid black;
 	width: 100%;
 	height: 100%;
-	border: var(--titlemargin) solid black;
-	display: flex;
-	flex-direction: column;
-	user-select: none;
+	position: absolute;
+	top: 0;
+	left: 0;
 }
 
 @utility drag {
@@ -48,8 +47,9 @@ html {
 
 @layer components {
 	#titleBar {
-		@apply top-[var(--titlemargin)] left-[var(--titlemargin)] h-[40px] bg-black w-full absolute drag;
-	} 
+		@apply h-[40px]
+		bg-black w-full absolute drag;
+	}
 
 	#appName {
 		@apply text-white inline-flex font-bold items-center space-x-1.5 absolute top-1.5 left-3 no-drag;
@@ -63,6 +63,10 @@ html {
 		@apply text-white;
 	}
 
+	#windowtitle {
+		@apply text-white text-[12px] mt-[2px];
+	}
+
 	#version {
 		@apply text-gray-500 text-[11px] mt-[7px];
 	}
@@ -73,5 +77,9 @@ html {
 
 	#minbtn, #maxbtn, #closebtn {
 		@apply cursor-pointer;
+	}
+
+	#popupmessage {
+		@apply flex justify-center h-screen items-center text-red-500;
 	}
 }

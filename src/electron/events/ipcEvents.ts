@@ -20,7 +20,10 @@ function registerMainEvents() {
 	ipcMain.on('maximize-window', (event):any => {
 		const win = BrowserWindow.fromWebContents(event.sender);
 		if (win) {
-			win.isMaximized() ? win.unmaximize() : win.maximize();
+			if (win.isMaximized())
+				win.unmaximize();
+			else
+				win.maximize();
 		}
 	});
 }

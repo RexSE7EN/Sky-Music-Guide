@@ -41,14 +41,14 @@ export const xD = () => {
 		}
 	});
 
-	// const openWindowBtn = document.getElementById("openWindowBtn");
-	// if (openWindowBtn) {
-	// 	openWindowBtn.addEventListener('click', () => {
-	// 		window.electron.openNewWindow("xD");
-	// 		const res = window.electron.openPopupWindow("LOL", "Close this window to return to the main window?");
-	// 		res.then(r => document.getElementById("res").textContent = r);
-	// 	});
-	// }
+	const openWindowBtn = document.getElementById("openWindowBtn");
+	if (openWindowBtn) {
+		openWindowBtn.addEventListener('click', () => {
+			// window.electron.openNewWindow("xD");
+			const res = window.electron.openPopupWindow("LOL", "Close this window?");
+			res.then(r => console.log(r));
+		});
+	}
 
 	const closebtn = document.getElementById("closebtn");
 	if (closebtn) {
@@ -69,5 +69,17 @@ export const xD = () => {
 		maxbtn.addEventListener('click', () => {
 			window.electron.maximizeWindow();
 		});
+	}
+
+	const w_title = document.getElementById("windowtitle");
+	if (w_title) {
+		// Extract query params from the URL
+		const hash = window.location.hash;
+		const queryString = hash.includes("?") ? hash.split("?")[1] : "";
+		const params = new URLSearchParams(queryString);
+
+		// Get the title parameter and update the state
+		const newTitle = params.get("title") || "Default Title";
+		w_title.textContent = decodeURIComponent(newTitle);
 	}
 }
