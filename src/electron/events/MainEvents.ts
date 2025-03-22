@@ -40,6 +40,17 @@ function registerMainEvents() {
 				win.maximize();
 		}
 	});
+
+	ipcMain.on('log-message', (event, message) => {
+		console.log('[Renderer Log]', message);
+	});
+
+	ipcMain.on('forward-message', (event, targetWindowId, channel, ...args) => {
+		const targetWindow = BrowserWindow.fromId(targetWindowId);
+		if (targetWindow) {
+			targetWindow.webContents.send(channel, ...args);
+		}
+	});
 }
 
 export { registerMainEvents };

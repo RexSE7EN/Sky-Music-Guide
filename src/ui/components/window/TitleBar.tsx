@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import {controlMenu, titleWithVersion} from '../js/core.js';
+import {controlMenu, titleWithVersion} from '../../js/core.ts';
 
 const TitleBar = () => {
     useEffect(() => {

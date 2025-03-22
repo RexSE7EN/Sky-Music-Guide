@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { controlMenu } from '../js/core.js';
+import { controlMenu } from '../../js/core.ts';
 
 function getControls ({type}: {type:string}) {
     if (type === "popup") {

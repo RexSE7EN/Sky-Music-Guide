@@ -1,8 +1,8 @@
 import { createRoot } from 'react-dom/client'
 import { HashRouter, Routes, Route } from "react-router-dom";
 import App from './App.tsx'
-import PopupWindow from "./components/PopupWindow.tsx";
-import NormalWindow from "./components/NormalWindow.tsx";
+import PopupWindow from "./components/window/PopupWindow.tsx";
+import NormalWindow from "./components/window/NormalWindow.tsx";
 
 createRoot(document.getElementById('root')!).render(
     <HashRouter>

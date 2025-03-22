@@ -44,32 +44,25 @@ const createWindow = (options: Options) => {
 		removeChildWindow(newWindow);
 	});
 
-	const base = app.getAppPath();
-	console.log(base);
-
-	// const query = `?title=${encodeURIComponent(options.title)}${options.message ? `&message=${encodeURIComponent(options.message)}` : ""}`;
-
 	if (isDev()) {
 		newWindow.webContents.openDevTools();
 		newWindow.loadURL("http://localhost:2325/#/" + options.windowType);
-		// newWindow.loadURL("http://localhost:2325/#/" + options.windowType + query);
 	} else {
 		if (options.enableDevMode) newWindow.webContents.openDevTools();
 		newWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'), {
 			hash: `${options.windowType}`,
-			// hash: `${options.windowType}${query}`,
 		});
 	}
 
 	setTimeout(() => {
 		newWindow.webContents.send('create-window-message', {title: options.title, windowContent: options.windowContent});
-	}, 500);
+	}, 250);
 
 	return newWindow;
 };
 
 const registerCreateSubWindow = () => {
-	ipcMain.on('open-new-window', (event, title,content, width, height, resizable, maximizable, frameless, devMode) => {
+	ipcMain.handle('open-new-window', async (event, title, content, width, height, resizable, maximizable, frameless, devMode) => {
 		const opt = {
 			title,
 			width,
@@ -84,7 +77,9 @@ const registerCreateSubWindow = () => {
 			windowContent: content,
 		}
 
-		createWindow(opt);
+		const newWindow = createWindow(opt);
+		console.log("events handler New window ID:", newWindow.id);
+		return newWindow.id; // Return the window ID
 	});
 };
 

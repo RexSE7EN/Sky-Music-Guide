@@ -18,12 +18,13 @@ contextBridge.exposeInMainWorld('electron', {
 	minimizeWindow: () => ipcRenderer.send('minimize-window'),
 	maximizeWindow: () => ipcRenderer.send('maximize-window'),
 
-	openNewWindow: (title = "Demo Window", content = "default", width = 400, height = 300,
-		resizable=true, maximizable=true, frameless=true, devMode=false) => {
-		ipcRenderer.send('open-new-window', title, content, width, height, resizable, maximizable, frameless, devMode);
-	},
-	openPopupWindow: (title = "Demo Popup", message = "Test Message", devMode=false) => ipcRenderer.invoke('open-popup-window', title, message, devMode),
+	logMessage: (message: string) => ipcRenderer.send('log-message', message),
 
+	openNewWindow: (title = "Demo Window", content = "default", width = 400, height = 300,
+		resizable=true, maximizable=true, frameless=true, devMode=false) => 
+		ipcRenderer.invoke('open-new-window', title, content, width, height, resizable, maximizable, frameless, devMode),
+	
+	openPopupWindow: (title = "Demo Popup", message = "Test Message", devMode=false) => ipcRenderer.invoke('open-popup-window', title, message, devMode),
 
 	sendMessage: (channel: string, ...args: unknown[]): void => {
 		ipcRenderer.send(channel, ...args);
@@ -34,5 +35,9 @@ contextBridge.exposeInMainWorld('electron', {
 	// Optional: Remove listener to avoid memory leaks
 	removeListeners: (channel: string, callback: (...args: unknown[]) => void): void => {
 		ipcRenderer.removeListener(channel, callback);
+	},
+
+	forwardMessage: (targetWindowId: number, channel: string, ...args: unknown[]): void => {
+		ipcRenderer.send('forward-message', targetWindowId, channel, ...args);
 	},
 });

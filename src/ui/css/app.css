@@ -2,6 +2,7 @@
 
 :root {
 	--titlemargin: 2px;
+	@apply bg-gray-600;
 }
 
 .card {
@@ -20,12 +21,18 @@ html {
 }
 
 #borderarea {
-	border: var(--titlemargin) solid black;
+	border: var(--titlemargin) solid red;
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
+}
+
+#displayarea {
+	position: absolute;
+	top: 10px;
+	left: 10px;
 }
 
 @utility drag {
@@ -49,6 +56,11 @@ html {
 	#titleBar {
 		@apply h-[40px]
 		bg-black w-full absolute drag;
+	}
+
+	#otitleBar {
+		@apply h-[40px]
+		w-full absolute drag;
 	}
 
 	#appName {

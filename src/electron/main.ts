@@ -1,10 +1,10 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'node:path';
-import { registerMainEvents } from './events/ipcEvents.js';
-import { registerInfoHandle } from './handlers/ipcHandlers.js';
+import { registerMainEvents } from './events/MainEvents.js';
+import {registerCreatePopupWindow, registerCreateSubWindow} from "./events/WindowEvents.js";
+import { registerInfoHandle } from './handlers/MainHandlers.js';
 import { getAllWindows } from './utils/windowUtils.js';
 import { getPreloadPath, isDev } from './utils/infoUtils.js';
-import {registerCreatePopupWindow, registerCreateSubWindow} from "./events/registerWindowEvents.js";
 
 // Create the main window
 const createWindow = () => {

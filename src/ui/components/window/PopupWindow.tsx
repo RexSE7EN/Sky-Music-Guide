@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import '../css/app.css'
+import '../../css/app.css'
 import WindowTitleBar from "./WindowTitleBar.tsx";
 
 function Popup() {
