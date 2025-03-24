@@ -3,15 +3,13 @@ import '../../css/app.css'
 
 function InstrumentOverlay() {
     const [instrument, setInstrument] = useState("");
-    const [song, setSong] = useState("");
-    const [songData, setSongData] = useState({});
+    const [songData, setSongData] = useState<{ song: string, artist: string, year: string }>({ song: "", artist: "", year: "" });
     const [isPlayingSong, setIsPlayingSong] = useState(false);
 
     useEffect(() => {
         const sss = (res:args) => {
-            const { instrument, song, songData, isPlayingSong } = res as { instrument:string, song:string, songData:object, isPlayingSong:boolean };
+            const { instrument, songData, isPlayingSong } = res as { instrument:string, songData:{ song: string, artist: string, year: string }, isPlayingSong:boolean };
             setInstrument(instrument);
-            setSong(song);
             setSongData(songData);
             setIsPlayingSong(isPlayingSong);
         };
@@ -32,8 +30,9 @@ function InstrumentOverlay() {
             This is the Instrument Overlay
             <br/>
             {instrument} <br/>
-            {song} <br/>
-            {songData} <br/>
+            {songData.song} <br/>
+            {songData.artist} <br/>
+            {songData.year} <br/>
             {isPlayingSong} <br/>
         </>
     );

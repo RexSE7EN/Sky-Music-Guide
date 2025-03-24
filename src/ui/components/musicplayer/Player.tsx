@@ -2,25 +2,43 @@ import { useEffect, useState } from "react";
 import '../../css/app.css'
 
 function Player() {
-    const [song, setSong] = useState("");
     const [songData, setSongData] = useState({});
     const [isPlayingSong, setIsPlayingSong] = useState(false);
     const [instrument, setInstrument] = useState("");
 
+    const [playerOverlay, setPlayerOverlay] = useState(false);
 	const [winID, setWinID] = useState(-1);
+
     // const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        setSong("Test Song");
+        if (winID > -1) {
+            if (window.electron.windowExists(winID)) { setPlayerOverlay(true); return; }
+        }
+        setPlayerOverlay(false);
+    }, [winID]);
+
+    useEffect(() => {
         setSongData({song: "Test Song", artist: "Test Artist", year: "2021"});
         setInstrument("Test Instrument");
+
+        const playerHookUpdate = (res:args) => {
+            const { winID } = res as { winID:number };
+            setWinID(winID);
+        };
+
+        window.electron.receiveMessage('player-overlay-update', playerHookUpdate);
+
+        return () => {
+            window.electron.removeListeners('player-overlay-update', playerHookUpdate);
+        };
+
     }, []);
 
     useEffect(() => {
 		if (isPlayingSong) {
 			console.log("isPlayingSong:", isPlayingSong);
 			console.log("Instrument:", instrument);
-			console.log("Song:", song);
 			console.log("Song Data:", songData);
 		}
     }, [isPlayingSong]);
@@ -31,9 +49,13 @@ function Player() {
         {/*     <div id = "displayarea">*/}
                 <br/>
                 {instrument}
+            <br/>
+                {playerOverlay.toString()}
+            <br/>
+                {winID}
                 <br/>
 				<button onClick={async () => {
-						const windowId = await window.electron.openNewWindow("Music Player", "InstrumentOverlay", 800, 500, true, true, true);
+						const windowId = await window.electron.openNewWindow("Music Player", "InstrumentOverlay", 800, 500, true, false, true, false);
 						setWinID(windowId);
 						console.log("New window ID:", windowId);
 					}
@@ -43,7 +65,6 @@ function Player() {
 						setTimeout(() => {
                             const data:args = {
                                 instrument,
-                                song,
                                 songData,
                                 isPlayingSong
                             };

@@ -20,6 +20,9 @@ function loadcontent(content: string) {
         default:
             return (
                 <>
+                    <br/>
+                    <br/>
+                    <br/>
                    <p> Default content </p>
                 </>
             );
@@ -33,7 +36,7 @@ function Normal() {
     const [isReady, setIsReady] = useState(false);
 
     useEffect(() => {
-        const handleMessage = (res: unknown) => {
+        const handleMessage = (res:args) => {
             console.log('Received from Electron:', res);
             const { title, windowContent } = res as { title: string, windowContent: string };
             setTitle(title);
@@ -43,7 +46,6 @@ function Normal() {
         };
 
         window.electron.receiveMessage('create-window-message', handleMessage);
-
 
         return () => {
             window.electron.removeListeners('create-window-message', handleMessage);
@@ -58,7 +60,7 @@ function Normal() {
             console.log('element:', element);
             window.electron.showWindow();
         }
-    }, [isReady]);
+    }, [element, isReady, title, windowContent]);
 
     return (
         <div id="borderarea">

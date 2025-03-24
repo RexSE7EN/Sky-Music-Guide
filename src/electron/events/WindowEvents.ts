@@ -1,9 +1,11 @@
 import { app, ipcMain, BrowserWindow } from 'electron';
-import path from 'node:path';
+import path from "path";
 import {getPreloadPath, isDev} from '../utils/infoUtils.js';
 import { addChildWindow, removeChildWindow } from '../utils/windowUtils.js';
 
 let popupWindow:BrowserWindow;
+let overlayWindow:BrowserWindow;
+let overlayCaller: BrowserWindow;
 
 type Options = {
 	title: string;
@@ -22,6 +24,11 @@ type Options = {
 };
 
 const createWindow = (options: Options) => {
+	if (options.windowContent === "InstrumentOverlay" && overlayWindow && !overlayWindow.isDestroyed()) {
+		overlayWindow.focus();
+		return overlayWindow;
+	}
+
 	const newWindow = new BrowserWindow({
 		width: options.width,
 		height: options.height,
@@ -29,7 +36,7 @@ const createWindow = (options: Options) => {
 		maximizable: options.maximizable,
 		resizable: options.resizable,
 		title: options.title,
-		show: false,
+		show: true,
 		webPreferences: {
 			preload: getPreloadPath()
 		}
@@ -40,8 +47,15 @@ const createWindow = (options: Options) => {
 
 	addChildWindow(newWindow);
 
-	newWindow.on('closed', () => {
+	if (options.windowContent === "InstrumentOverlay") {
+		overlayWindow = newWindow;
+	}
+
+	newWindow.on('close', () => {
 		removeChildWindow(newWindow);
+		if (options.windowContent === "InstrumentOverlay") {
+			overlayCaller.webContents.send('player-overlay-update', {winID : -1});
+		}
 	});
 
 	if (isDev()) {
@@ -78,7 +92,13 @@ const registerCreateSubWindow = () => {
 		}
 
 		const newWindow = createWindow(opt);
-		console.log("events handler New window ID:", newWindow.id);
+
+		if (content === "InstrumentOverlay") {
+			const win = BrowserWindow.fromWebContents(event.sender);
+			if (win) overlayCaller = win;
+		}
+
+		console.log("[Events Handler] New window ID:", newWindow.id);
 		return newWindow.id; // Return the window ID
 	});
 };

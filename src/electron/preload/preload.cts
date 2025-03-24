@@ -11,8 +11,10 @@ contextBridge.exposeInMainWorld('appAPI', {
 
 // for events
 contextBridge.exposeInMainWorld('electron', {
+	getMainWindow: () => ipcRenderer.invoke('get-main-window'),
 	showWindow: () => ipcRenderer.send('show-window'),
 	hideWindow: () => ipcRenderer.send('hide-window'),
+	windowExists: (winID:number ):boolean => ipcRenderer.invoke('window-exists', winID),
 
 	closeWindow: () => ipcRenderer.send('close-window'),
 	minimizeWindow: () => ipcRenderer.send('minimize-window'),

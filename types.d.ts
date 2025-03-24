@@ -11,8 +11,10 @@ type appAPI = {
 };
 
 type electron = {
+	getMainWindow: () => BrowserWindow;
 	showWindow: () => void;
 	hideWindow: () => void;
+	windowExists: (winID: number) => boolean;
 	closeWindow: () => void;
 	minimizeWindow: () => void;
 	maximizeWindow: () => void;
