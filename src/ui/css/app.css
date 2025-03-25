@@ -94,4 +94,12 @@ html {
 	#popupmessage {
 		@apply flex justify-center h-screen items-center text-red-500;
 	}
+
+	.overlayIcons {
+		@apply flex items-center justify-center m-0 no-drag;
+	}
+
+	.overlayContainer {
+		@apply h-full w-full grid-rows-3 grid-cols-5 grid gap-2;
+	}
 }

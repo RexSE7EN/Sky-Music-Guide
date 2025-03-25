@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import '../../css/app.css'
+import ButtonOverlay from "./buttons/ButtonOverlay.tsx";
 
 function InstrumentOverlay() {
     const [instrument, setInstrument] = useState("");
@@ -27,13 +28,28 @@ function InstrumentOverlay() {
 
     return (
         <>
-            This is the Instrument Overlay
             <br/>
-            {instrument} <br/>
-            {songData.song} <br/>
-            {songData.artist} <br/>
-            {songData.year} <br/>
-            {isPlayingSong} <br/>
+            <div className="overlayContainer">
+                <ButtonOverlay type = "diamondcircle" active={false} />
+                <ButtonOverlay type = "diamond"  active={false} />
+                <ButtonOverlay type = "circle"  active={true} />
+                <ButtonOverlay type = "diamond"  active={false} />
+                <ButtonOverlay type = "circle"  active={true} />
+
+                <ButtonOverlay type = "circle" />
+                <ButtonOverlay type = "diamond" />
+                <ButtonOverlay type = "diamondcircle" />
+                <ButtonOverlay type = "diamond" />
+                <ButtonOverlay type = "circle" />
+
+                <ButtonOverlay type = "circle" />
+                <ButtonOverlay type = "diamond" />
+                <ButtonOverlay type = "circle" />
+                <ButtonOverlay type = "diamond" />
+                <ButtonOverlay type = "diamondcircle" />
+
+            </div>
+            {instrument}
         </>
     );
 }
